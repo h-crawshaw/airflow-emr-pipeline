@@ -1,6 +1,7 @@
 logs/
 *.log
 plugins/
+__pycache__/
 
 # scala/intellij
 target/
