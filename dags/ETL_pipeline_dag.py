@@ -89,6 +89,13 @@ JOB_FLOW_OVERRIDES = {
         'InstanceRole': 'CORE',
         'InstanceType': 'm5.xlarge',
         'InstanceCount': 2
+      },
+      {
+        'Name': 'Task node',
+        'Market': 'SPOT',
+        'InstanceRole': 'TASK',
+        'InstanceType': 'm5.xlarge',
+        'InstanceCount': 1
       }
     ],
     'KeepJobFlowAliveWhenNoSteps': False,
@@ -164,7 +171,6 @@ with DAG(
     bucket_name='aggrjobout',
     bucket_key=f'{get_key()}/_SUCCESS'
   )
-
 
   crc_delete = S3DeleteObjectsOperator(
         task_id='delete_crc_file',
