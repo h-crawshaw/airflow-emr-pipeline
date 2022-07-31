@@ -6,6 +6,7 @@ from airflow.operators.python import PythonOperator
 from airflow.providers.amazon.aws.operators.emr_create_job_flow import EmrCreateJobFlowOperator
 from airflow.providers.amazon.aws.operators.emr_add_steps import EmrAddStepsOperator
 from airflow.providers.amazon.aws.operators.redshift import RedshiftResumeClusterOperator
+from airflow.providers.amazon.aws.operators.redshift import RedshiftPauseClusterOperator
 from airflow.providers.amazon.aws.sensors.redshift_cluster import RedshiftClusterSensor
 from airflow.providers.amazon.aws.operators.redshift import RedshiftSQLOperator
 from airflow.providers.amazon.aws.operators.s3_delete_objects import S3DeleteObjectsOperator
@@ -190,6 +191,12 @@ with DAG(
         """
   )
 
+  rs_pause = RedshiftPauseClusterOperator(
+    task_id='pause_redshift',
+    cluster_identifier='rs-dev-1',
+    aws_conn_id='aws_default'
+  )
+
 chain(starting_dummy, get_keys, create_emr, [add_steps, resume_rs], [step_checker, check_rs], 
-check_s3, crc_delete, rs_copy, ending_dummy)
+check_s3, crc_delete, rs_copy, rs_pause, ending_dummy)
 
