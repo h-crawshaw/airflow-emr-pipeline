@@ -1,0 +1,16 @@
+logs/
+*.log
+plugins/
+
+# scala/intellij
+target/
+*.log
+*.iml
+*.ipr
+*.iws
+.idea
+.history
+.scala_dependencies
+.cache-main
+*.class
+.bsp/
