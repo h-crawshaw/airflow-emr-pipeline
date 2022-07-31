@@ -1,8 +1,7 @@
 from datetime import datetime, timedelta
-import logging
-from tracemalloc import start
-from airflow.operators.dummy_operator import DummyOperator
 from airflow import DAG 
+import logging
+from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.python import PythonOperator
 from airflow.providers.amazon.aws.operators.emr_create_job_flow import EmrCreateJobFlowOperator
 from airflow.providers.amazon.aws.operators.emr_add_steps import EmrAddStepsOperator
@@ -12,11 +11,9 @@ from airflow.providers.amazon.aws.operators.redshift import RedshiftSQLOperator
 from airflow.providers.amazon.aws.operators.s3_delete_objects import S3DeleteObjectsOperator
 from airflow.providers.amazon.aws.sensors.s3_key import S3KeySensor
 from airflow.providers.amazon.aws.sensors.emr_step import EmrStepSensor
-
-
+from airflow.providers.amazon.aws.hooks.s3 import S3Hook
 from airflow.models.baseoperator import chain
 
-from airflow.providers.amazon.aws.hooks.s3 import S3Hook
 source_s3 = S3Hook(aws_conn_id='aws_default')
 bucket_keys = source_s3.list_keys(
   bucket_name='2022-raw-stats',
